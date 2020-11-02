@@ -8,7 +8,7 @@ export class App extends Component {
   state = { videos: [], selectedVideo: null };
 
   componentDidMount() {
-    this.onTermSubmit("");
+    this.onTermSubmit("trending 1");
   }
   onTermSubmit = async (term) => {
     const { data } = await youtube.get("/search", {

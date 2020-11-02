@@ -2,7 +2,25 @@ import React from "react";
 
 const VideoDetail = ({ video }) => {
   if (!video) {
-    return <div>Loading...</div>;
+    return (
+      <div className="ui segment">
+        <h1> </h1>
+        <h1> </h1>
+        <h1> </h1>
+        <h1> </h1>
+        <h1> </h1>
+        <div className="ui active inverted dimmer">
+          <div className="ui massive loader"></div>
+        </div>
+        <h1> </h1>
+        <h1> </h1>
+        <h1> </h1>
+        <h1> </h1>
+        <h1> </h1>
+        <h1> </h1>
+        <h1> </h1>
+      </div>
+    );
   }
   return (
     <>
