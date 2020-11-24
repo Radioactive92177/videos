@@ -1,16 +1,15 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import SearchBar from "./SearchBar";
 import youtube from "../apis/youtube";
 import VideoDetail from "./VideoDetail";
 import VideoList from "./VideoList";
 
-export class App extends Component {
-  state = { videos: [], selectedVideo: null };
+const App = () => {
+  const [videos, setVideos] = useState([]); //* To store Videos
+  const [selectedVideo, setSelectedVideo] = useState(null); //* To store the selected video
 
-  componentDidMount() {
-    this.onTermSubmit();
-  }
-  onTermSubmit = async (term) => {
+  //? For fetching videos from youtube
+  const onTermSubmit = async (term) => {
     const { data } = await youtube.get("/search", {
       params: {
         q: term,
@@ -20,38 +19,38 @@ export class App extends Component {
         key: "AIzaSyAYbmBCCEV_8IE3tX_1RheZKPqc5Nzuhkw",
       },
     });
-    this.setState({
-      videos: data.items,
-      selectedVideo: data.items[0],
-    });
+
+    setVideos(data.items);
+    setSelectedVideo(data.items[0]);
   };
 
-  onVideoSelect = (video) => {
-    this.setState({ selectedVideo: video });
+  //? For videos at initial render
+  useEffect(() => {
+    onTermSubmit();
+  }, []);
+
+  //? For showing the selecting video
+  const onVideoSelect = (video) => {
+    setSelectedVideo(video);
   };
 
-  render() {
-    return (
-      <>
-        <div className="ui container">
-          <SearchBar onFormSubmit={this.onTermSubmit} />
-          <div className="ui grid">
-            <div className="ui row">
-              <div className="eleven wide column">
-                <VideoDetail video={this.state.selectedVideo} />
-              </div>
-              <div className="five wide column">
-                <VideoList
-                  videos={this.state.videos}
-                  onVideoSelect={this.onVideoSelect}
-                />
-              </div>
+  return (
+    <>
+      <div className="ui container">
+        <SearchBar onFormSubmit={onTermSubmit} />
+        <div className="ui grid">
+          <div className="ui row">
+            <div className="eleven wide column">
+              <VideoDetail video={selectedVideo} />
+            </div>
+            <div className="five wide column">
+              <VideoList videos={videos} onVideoSelect={onVideoSelect} />
             </div>
           </div>
         </div>
-      </>
-    );
-  }
-}
+      </div>
+    </>
+  );
+};
 
 export default App;
